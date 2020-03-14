@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import navStyles from './NavStyles'
+import navStyles from '../styles/NavStyles'
 import AppBar from '@material-ui/core/AppBar'
 import ToolBar from '@material-ui/core/ToolBar'
 import IconButton from '@material-ui/core/IconButton'
