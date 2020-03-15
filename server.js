@@ -15,9 +15,9 @@ app.use(express.json());
 connectDB();
 
 // Use routes
-app.use('/api/users', require('./routes/users'));
-app.use('/api/flights', require('./routes/flights'));
-app.use('/api/aircraft', require('./routes/aircraft'));
+app.use('/api/v1/users', require('./routes/users'));
+app.use('/api/v1/flights', require('./routes/flights'));
+app.use('/api/v1/aircraft', require('./routes/aircraft'));
 
 // Use morgan if in development
 if (process.env.NODE_ENV === 'development') {
