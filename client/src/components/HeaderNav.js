@@ -1,27 +1,45 @@
 import React, { useState } from 'react'
+import navStyles from '../styles/NavStyles'
 import AppBar from '@material-ui/core/AppBar'
 import ToolBar from '@material-ui/core/ToolBar'
 import IconButton from '@material-ui/core/IconButton'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuIcon from '@material-ui/icons/Menu'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 
 const HeaderNav = () => {
-	const [state, setState] = useState({ isOpen: false })
+	const classes = navStyles()
+	const [auth, setAuth] = useState(true)
+	const [anchorEl, setAnchorEl] = useState(null)
+	const open = Boolean(anchorEl)
 
-	const navOpen = e => {
-		setState({ isOpen: !state.isOpen })
+	const handleMenu = () => {
+		console.log("butts")
 	}
+
 	return (
+		<div className={classes.root}>
 		<AppBar position='static'>
-			<ToolBar>
-				<IconButton>
+			<ToolBar variant="dense" className={classes.menuBar}>
+				<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
 					<MenuIcon />
 				</IconButton>
-				<Typography variant='h6'>News</Typography>
-				<Button color='inherit'>Login</Button>
+				<Typography variant='h6' className={classes.title}>React Logbook</Typography>
+				{auth ? (
+					<div>
+						<IconButton
+							aria-label="account of user"
+							aria-controls="menu-appbar"
+							onClick={handleMenu}
+							color="inherit"
+						>
+							<AccountCircle />
+						</IconButton>
+					</div>
+				) : null}
 			</ToolBar>
 		</AppBar>
+		</div>
 	)
 }
 
