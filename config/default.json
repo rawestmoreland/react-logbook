@@ -1,0 +1,4 @@
+{
+	"mongoURI": "mongodb+srv://admin:green579@cluster0-audr0.gcp.mongodb.net/logbook?retryWrites=true&w=majority",
+	"jwtSecret": "sl_jwtsecret"
+}
