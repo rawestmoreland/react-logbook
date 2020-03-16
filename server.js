@@ -16,14 +16,8 @@ connectDB();
 
 // Use routes
 app.use('/api/v1/users', require('./routes/users'));
-app.use('/api/v1/flights', require('./routes/flights'));
 app.use('/api/v1/aircraft', require('./routes/aircraft'));
 app.use('/api/v1/auth', require('./routes/auth'));
-
-// Use morgan if in development
-if (process.env.NODE_ENV === 'development') {
-	app.use(morgan('dev'));
-}
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
