@@ -2,14 +2,24 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// @route  GET api/auth/user
 // @desc   Get user data
-// @route  api/v1/auth
 // @access Private
-exports.getUserData = async (req, res) => {
-	const user = await User.findById(req.user.id).select('-password');
+exports.getUserData = async (req, res, next) => {
+	try {
+		const user = await User.findById(req.user.id).select('-password');
 
-	res.json({ user });
-};
+		return res.status(200).json({
+			success: true,
+			user: user
+		});
+	} catch (err) {
+		return res.status(500).json({
+			success: false,
+			error: 'Server Error'
+		});
+	}
+}
 
 // @desc   Authorize a user
 // @route  POST api/v1/auth/user

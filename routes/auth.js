@@ -5,13 +5,6 @@ const auth = require('../middleware/auth');
 
 router.route('/').post(authUser);
 
-// @route  GET api/auth/user
-// @desc   Get user data
-// @access Private
-router.get('/user', auth, (req, res) => {
-	User.findById(req.user.id)
-		.select('-password')
-		.then(user => res.json(user));
-});
+router.route('/user').get(auth, getUserData);
 
 module.exports = router;
