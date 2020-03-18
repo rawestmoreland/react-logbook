@@ -1,16 +1,18 @@
-const User = require ('../models/User');
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-// @route  GET api/auth/user
 // @desc   Get user data
+// @route  api/v1/auth
 // @access Private
 exports.getUserData = async (req, res) => {
-	const user = await User.findById(req.user.id).select('-password')
-    
-        res.json({user});
-}
+	const user = await User.findById(req.user.id).select('-password');
+
+	res.json({ user });
+};
 
 // @desc   Authorize a user
-// @route POST api/auth
+// @route  POST api/v1/auth/user
 // @access Public
 exports.authUser = async (req, res, next) => {
 	const { email, password } = req.body;
