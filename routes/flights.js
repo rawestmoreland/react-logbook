@@ -11,3 +11,5 @@ router.route('/').get(getFlights);
 router.route('/').post(addFlight);
 
 router.route('/:id').delete(deleteFlight);
+
+module.exports = router;

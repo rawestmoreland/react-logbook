@@ -1,7 +1,4 @@
-const express = require('express');
-const router = express.Router();
-
-const Aircraft = require('../models/Aircraft')
+const Aircraft = require('../models/Aircraft');
 
 // @desc   Get all aircraft
 // @route  GET /api/v1/aircraft
@@ -21,7 +18,7 @@ exports.getAircraft = async (req, res, next) => {
 			error: 'Server Error'
 		});
 	}
-}
+};
 
 // @desc   Add an aircraft
 // @route  POST /api/v1/aircraft
@@ -62,7 +59,7 @@ exports.addAircraft = async (req, res, next) => {
 			error: 'Server Error'
 		});
 	}
-}
+};
 
 // @desc   Delete an aircraft
 // @route  DELETE /api/v1/aircraft/:id
@@ -90,4 +87,4 @@ exports.deleteAircraft = async (req, res, next) => {
 			error: 'Server Error'
 		});
 	}
-}
+};
