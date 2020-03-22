@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import navStyles from '../styles/NavStyles';
 import AppBar from '@material-ui/core/AppBar';
 import ToolBar from '@material-ui/core/ToolBar';
@@ -7,31 +7,45 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
+import LoginModal from './auth/LoginModal';
+import RegisterModal from './auth/RegisterModal';
 
-const HeaderNav = () => {
+const AppNavbar = () => {
 	const classes = navStyles();
-	const [auth, setAuth] = useState(true);
-	const [isDesktop, setIsDesktop] = useState(false);
+	const [auth, setAuth] = useState(false);
+	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 
 	useEffect(() => {
-		window.addEventListener('resize', console.log('butts'));
+		window.addEventListener('resize', updateWidth);
+		return () => window.removeEventListener('resize', updateWidth);
 	}, []);
+
+	const updateWidth = () => {
+		setScreenWidth(window.innerWidth);
+	};
 
 	const handleMenu = () => {
 		console.log('butts');
 	};
 
-	const toggle = () => {
+	const handleLogin = () => {
 		console.log('login Modal');
 	};
+
+	const guestLinks = (
+		<Fragment>
+			<RegisterModal />
+			<LoginModal />
+		</Fragment>
+	);
 
 	return (
 		<div className={classes.root}>
 			<AppBar position='static'>
 				<ToolBar variant='dense' className={classes.menuBar}>
-					{!isDesktop ? (
+					{screenWidth < 600 ? (
 						<IconButton
 							edge='start'
 							className={classes.menuButton}
@@ -44,33 +58,11 @@ const HeaderNav = () => {
 					<Typography variant='h6' className={classes.title}>
 						React Logbook
 					</Typography>
-					{auth ? (
-						<div>
-							<IconButton
-								aria-label='account of user'
-								aria-controls='menu-appbar'
-								onClick={handleMenu}
-								color='inherit'
-							>
-								<AccountCircle />
-							</IconButton>
-						</div>
-					) : (
-						<div>
-							<Button
-								aria-label='login'
-								aria-controls='menu-appbar'
-								onClick={toggle}
-								color='inherit'
-							>
-								Login
-							</Button>
-						</div>
-					)}
+					{auth ? null : guestLinks}
 				</ToolBar>
 			</AppBar>
 		</div>
 	);
 };
 
-export default HeaderNav;
+export default AppNavbar;

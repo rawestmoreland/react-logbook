@@ -1,12 +1,12 @@
-import React from 'react'
-import HeaderNav from './components/HeaderNav'
+import React from 'react';
+import AppNavbar from './components/AppNavbar';
 
 const App = () => {
 	return (
 		<div>
-			<HeaderNav />
+			<AppNavbar />
 		</div>
-	)
-}
+	);
+};
 
-export default App
+export default App;
