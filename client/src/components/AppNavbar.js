@@ -1,5 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import navStyles from '../styles/NavStyles';
+import Box from '@material-ui/core/Box';
+import Fade from '@material-ui/core/Fade';
 import AppBar from '@material-ui/core/AppBar';
 import ToolBar from '@material-ui/core/ToolBar';
 import Button from '@material-ui/core/Button';
@@ -34,6 +36,7 @@ const AppNavbar = () => {
 		console.log('login Modal');
 	};
 
+	// Button to show if not logged in
 	const guestLinks = (
 		<Fragment>
 			<RegisterModal />
@@ -41,23 +44,33 @@ const AppNavbar = () => {
 		</Fragment>
 	);
 
+	// TODO: Add the buttons for logged-in users
+	const authLinks = <Fragment></Fragment>;
+
 	return (
 		<div className={classes.root}>
 			<AppBar position='static'>
 				<ToolBar variant='dense' className={classes.menuBar}>
-					{screenWidth < 600 ? (
-						<IconButton
-							edge='start'
-							className={classes.menuButton}
-							color='inherit'
-							aria-label='menu'
-						>
-							<MenuIcon />
-						</IconButton>
-					) : null}
+					{/* Fade the menu in when it's displayed */}
+					<Fade in={screenWidth < 600} timout={3000}>
+						{/* Box with display prop to show and hide the mobile menu button */}
+						<Box display={{ xs: 'flex', sm: 'none' }}>
+							<IconButton
+								edge='start'
+								className={classes.menuButton}
+								color='inherit'
+								aria-label='menu'
+							>
+								<MenuIcon />
+							</IconButton>
+						</Box>
+					</Fade>
 					<Typography variant='h6' className={classes.title}>
 						React Logbook
 					</Typography>
+					{/* Are we logged in? If not, only show login and register buttons 
+						TODO: add buttons for logged-in users
+					*/}
 					{auth ? null : guestLinks}
 				</ToolBar>
 			</AppBar>

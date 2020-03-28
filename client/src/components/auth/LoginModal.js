@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -22,6 +23,7 @@ const LoginModal = () => {
 	const handleSubmit = e => {
 		e.preventDefault();
 		console.log('submit');
+		setOpen(!open);
 	};
 
 	return (
@@ -39,26 +41,31 @@ const LoginModal = () => {
 					<DialogContentText>
 						Enter your email and password to login
 					</DialogContentText>
-					<TextField
-						m={2}
-						name='email'
-						type='email'
-						label='Email address'
-						value={email}
-						onChange={e => {
-							setEmail(e.target.value);
-							console.log(email);
-						}}
-					/>
-					<TextField
-						name='password'
-						type='password'
-						label='Password'
-						value={password}
-						onChange={e => {
-							setPassword(e.target.value);
-						}}
-					/>
+					<Box mt={1}>
+						<TextField
+							className={classes.modalText}
+							name='email'
+							type='email'
+							label='Email address'
+							value={email}
+							onChange={e => {
+								setEmail(e.target.value);
+								console.log(email);
+							}}
+						/>
+					</Box>
+					<Box mt={1}>
+						<TextField
+							className={classes.modalText}
+							name='password'
+							type='password'
+							label='Password'
+							value={password}
+							onChange={e => {
+								setPassword(e.target.value);
+							}}
+						/>
+					</Box>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={toggle}>Cancel</Button>

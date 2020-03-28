@@ -8,7 +8,12 @@ const navStyles = makeStyles(theme => ({
 		flexGrow: 1
 	},
 	menuButton: {
-		marginRight: theme.spacing(2)
+		display: 'none',
+		marginRight: theme.spacing(2),
+		transition: 'display 0.5s'
+	},
+	show: {
+		display: 'flex'
 	},
 	menuBar: {
 		backgroundColor: color.darkBlue
@@ -16,12 +21,8 @@ const navStyles = makeStyles(theme => ({
 	title: {
 		flexGrow: 1
 	},
-	loginModalInputs: {
-		display: 'flex',
-		flexDirection: 'column'
-	},
-	modalInputGroup: {
-		margin: [15, 0]
+	modalText: {
+		width: '100%'
 	}
 }));
 
