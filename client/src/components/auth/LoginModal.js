@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -7,6 +8,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import navStyles from '../../styles/NavStyles';
 
@@ -36,7 +39,18 @@ const LoginModal = () => {
 				onClose={toggle}
 				aria-labelledby='form-dialog-title'
 			>
-				<DialogTitle id='form-dialog-title'>Login</DialogTitle>
+				<Grid container>
+					<Grid item xs={6}>
+						<DialogTitle>Login</DialogTitle>
+					</Grid>
+					<Grid item xs={6}>
+						<Box display="flex" justifyContent="flex-end">
+							<IconButton onClick={toggle}>
+								<CloseIcon />
+							</IconButton>
+						</Box>
+					</Grid>
+				</Grid>
 				<DialogContent>
 					<DialogContentText>
 						Enter your email and password to login

@@ -23,6 +23,9 @@ const navStyles = makeStyles(theme => ({
 	},
 	modalText: {
 		width: '100%'
+	},
+	closeModalButton: {
+		padding: '0'
 	}
 }));
 
