@@ -83,7 +83,7 @@ const LoginModal = () => {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={toggle}>Cancel</Button>
-					<Button onClick={handleSubmit}>Submit</Button>
+					<Button onClick={handleSubmit}>Login</Button>
 				</DialogActions>
 			</Dialog>
 		</div>
