@@ -1,11 +1,12 @@
 import React from 'react';
-import AppNavbar from './components/AppNavbar';
+import { CssBaseline } from '@material-ui/core';
+import AppNavbar from './components/AppNavbar/AppNavbar';
 
 const App = () => {
 	return (
-		<div>
+		<CssBaseline>
 			<AppNavbar />
-		</div>
+		</CssBaseline>
 	);
 };
 
