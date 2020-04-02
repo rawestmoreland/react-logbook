@@ -88,3 +88,18 @@ exports.deleteAircraft = async (req, res, next) => {
 		});
 	}
 };
+
+// Test function
+exports.helloWorld = (req, res, next) => {
+	try {
+		return res.status(200).json({
+			success: true,
+			message: 'Hello World'
+		});
+	} catch (err) {
+		return res.status(500).json({
+			success: false,
+			error: 'Server Error'
+		});
+	}
+};
