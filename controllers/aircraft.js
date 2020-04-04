@@ -47,11 +47,33 @@ exports.addAircraft = async (req, res, next) => {
 			taa
 		} = req.body;
 
-		const aicraft = await Aircraft.create(req.body);
+		const newAircraft = new Aircraft({
+			ident,
+			ac_or_sim,
+			model,
+			icao_code,
+			category,
+			engines,
+			engine_type,
+			land_or_sea,
+			manufacturer,
+			model_year,
+			weight_class,
+			equipment,
+			hi_perf,
+			ifr_equipped,
+			complex,
+			tailwheel,
+			unmanned,
+			owner,
+			taa
+		});
 
-		return res.status(201).json({
-			success: true,
-			data: aircraft
+		await newAircraft.save();
+
+		return res.status(200).json({
+			susccess: true,
+			data: newAircraft
 		});
 	} catch (err) {
 		return res.status(500).json({
