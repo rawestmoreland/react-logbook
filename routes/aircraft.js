@@ -4,7 +4,7 @@ const {
 	getAircraft,
 	addAircraft,
 	deleteAircraft,
-	helloWorld
+	addMany
 } = require('../controllers/aircraft');
 
 router.route('/').get(getAircraft);
@@ -13,6 +13,6 @@ router.route('/').post(addAircraft);
 
 router.route('/:id').delete(deleteAircraft);
 
-router.route('/hello').get(helloWorld);
+router.route('/many').post(addMany);
 
 module.exports = router;

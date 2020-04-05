@@ -69,10 +69,20 @@ exports.addAircraft = async (req, res, next) => {
 			taa
 		});
 
+		// Check for existing aircraft
+		const aircraft = await Aircraft.findOne({ ident });
+
+		if (aircraft) {
+			return res.status(400).json({
+				success: false,
+				error: 'Aircraft already exists'
+			});
+		}
+
 		await newAircraft.save();
 
 		return res.status(200).json({
-			susccess: true,
+			success: true,
 			data: newAircraft
 		});
 	} catch (err) {
@@ -112,16 +122,12 @@ exports.deleteAircraft = async (req, res, next) => {
 };
 
 // Test function
-exports.helloWorld = (req, res, next) => {
-	try {
-		return res.status(200).json({
-			success: true,
-			message: 'Hello World'
-		});
-	} catch (err) {
-		return res.status(500).json({
-			success: false,
-			error: 'Server Error'
-		});
-	}
+exports.addMany = async (req, res, next) => {
+	await Aircraft.collection.insert(req.body, (err, docs) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('Documents were added to the collections');
+		}
+	});
 };
