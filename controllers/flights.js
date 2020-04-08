@@ -10,12 +10,12 @@ exports.getFlights = async (req, res, next) => {
 		return res.status(200).json({
 			success: true,
 			count: flights.length,
-			data: flights
+			data: flights,
 		});
 	} catch (err) {
 		return res.statu(500).json({
 			success: false,
-			error: 'Server Error'
+			error: 'Server Error',
 		});
 	}
 };
@@ -29,7 +29,8 @@ exports.addFlight = async (req, res, next) => {
 			date,
 			aircraft_id,
 			route,
-			takeoffs,
+			day_takeoffs,
+			night_takeoffs,
 			day_ldgs,
 			night_ldgs,
 			approaches,
@@ -37,32 +38,68 @@ exports.addFlight = async (req, res, next) => {
 			multi_engine,
 			complex,
 			turbine,
-			jet,
-			sim,
+			rotocraft,
 			xc,
+			night,
 			imc,
 			sim_imc,
-			total,
-			night,
+			sim,
 			pic,
 			sic,
+			solo,
 			dual_recd,
 			dual_given,
-			remarks
+			total,
+			remarks,
 		} = req.body;
 
-		const flight = await Flight.create(req.body);
+		const newFlight = new Flight({
+			date,
+			aircraft_id,
+			route,
+			day_takeoffs,
+			night_takeoffs,
+			day_ldgs,
+			night_ldgs,
+			approaches,
+			single_engine,
+			multi_engine,
+			complex,
+			turbine,
+			rotocraft,
+			xc,
+			night,
+			imc,
+			sim_imc,
+			sim,
+			pic,
+			sic,
+			solo,
+			dual_recd,
+			dual_given,
+			total,
+			remarks,
+		});
+
+		await newFlight.save();
 
 		return res.status(201).json({
 			success: true,
-			data: flight
+			data: flight,
 		});
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error'
+			error: 'Server Error',
 		});
 	}
+};
+
+// @desc   Create many flights - from an import
+// @route  POST /api/v1/flights/many
+// @access Public
+exports.addMany = async (req, res, next) => {
+	console.log(req.body);
 };
 
 // @desc   Delete a flight
@@ -75,7 +112,7 @@ exports.deleteFlight = async (req, res, next) => {
 		if (!flight) {
 			return res.status(404).json({
 				success: false,
-				error: 'No flight found'
+				error: 'No flight found',
 			});
 		}
 
@@ -83,12 +120,12 @@ exports.deleteFlight = async (req, res, next) => {
 
 		return res.status(200).json({
 			success: true,
-			data: {}
+			data: {},
 		});
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error'
+			error: 'Server Error',
 		});
 	}
 };

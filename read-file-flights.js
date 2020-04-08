@@ -1,8 +1,6 @@
 const csv = require('csvtojson');
 const axios = require('axios').default;
 
-let acList = [];
-
 csv({
 	noheader: false,
 	headers: [
@@ -35,4 +33,18 @@ csv({
 	],
 })
 	.fromFile('Flights.csv')
-	.then((data) => console.log(data));
+	.then((data) => {
+		let testFlight = [data[0]];
+		console.log(testFlight);
+		axios({
+			url: 'http://localhost:5000/api/v1/flights/many',
+			method: 'POST',
+			data: testFlight,
+		})
+			.then((response) => {
+				console.log(response.data);
+			})
+			.catch((err) => {
+				console.log('Error');
+			});
+	});
