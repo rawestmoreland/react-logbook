@@ -9,7 +9,7 @@ const connectDB = require('./config/db');
 dotenv.config({ path: './config/config.env' });
 
 // Bodyparser middleware
-app.use(express.json({ limit: '200kb' }));
+app.use(express.json({ limit: '5mb' }));
 
 // DB Config
 connectDB();

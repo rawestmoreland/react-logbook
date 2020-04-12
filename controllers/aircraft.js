@@ -121,7 +121,9 @@ exports.deleteAircraft = async (req, res, next) => {
 	}
 };
 
-// Test function
+// @desc   Create many aircraft - from an import
+// @route  POST /api/v1/aircraft/many
+// @access Public
 exports.addMany = async (req, res, next) => {
 	await Aircraft.collection.insert(req.body, (err, docs) => {
 		if (err) {

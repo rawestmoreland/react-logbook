@@ -99,7 +99,13 @@ exports.addFlight = async (req, res, next) => {
 // @route  POST /api/v1/flights/many
 // @access Public
 exports.addMany = async (req, res, next) => {
-	console.log(req.body);
+	await Flight.insertMany(req.body, (err, docs) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('Documents were added to the collection');
+		}
+	});
 };
 
 // @desc   Delete a flight
