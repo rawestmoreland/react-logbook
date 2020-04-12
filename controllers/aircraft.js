@@ -10,12 +10,12 @@ exports.getAircraft = async (req, res, next) => {
 		return res.status(200).json({
 			success: true,
 			count: aircraft.length,
-			data: aircraft
+			data: aircraft,
 		});
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error'
+			error: 'Server Error',
 		});
 	}
 };
@@ -44,7 +44,7 @@ exports.addAircraft = async (req, res, next) => {
 			tailwheel,
 			unmanned,
 			owner,
-			taa
+			taa,
 		} = req.body;
 
 		const newAircraft = new Aircraft({
@@ -66,7 +66,7 @@ exports.addAircraft = async (req, res, next) => {
 			tailwheel,
 			unmanned,
 			owner,
-			taa
+			taa,
 		});
 
 		// Check for existing aircraft
@@ -75,7 +75,7 @@ exports.addAircraft = async (req, res, next) => {
 		if (aircraft) {
 			return res.status(400).json({
 				success: false,
-				error: 'Aircraft already exists'
+				error: 'Aircraft already exists',
 			});
 		}
 
@@ -83,12 +83,12 @@ exports.addAircraft = async (req, res, next) => {
 
 		return res.status(200).json({
 			success: true,
-			data: newAircraft
+			data: newAircraft,
 		});
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error'
+			error: 'Server Error',
 		});
 	}
 };
@@ -103,7 +103,7 @@ exports.deleteAircraft = async (req, res, next) => {
 		if (!aircraft) {
 			return res.status(404).json({
 				success: false,
-				error: 'No aircraft found'
+				error: 'No aircraft found',
 			});
 		}
 
@@ -111,17 +111,19 @@ exports.deleteAircraft = async (req, res, next) => {
 
 		return res.status(200).json({
 			success: true,
-			data: {}
+			data: {},
 		});
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error'
+			error: 'Server Error',
 		});
 	}
 };
 
-// Test function
+// @desc   Create many aircraft - from an import
+// @route  POST /api/v1/aircraft/many
+// @access Public
 exports.addMany = async (req, res, next) => {
 	await Aircraft.collection.insert(req.body, (err, docs) => {
 		if (err) {
