@@ -33,8 +33,6 @@ if (process.env.NODE_ENV === 'production') {
 // Get our port (default 5000)
 const port = process.env.PORT || 5000;
 
-app.get('/', (req, res) => res.send('Hello World'));
-
 // Start the server
 app.listen(
 	port,
