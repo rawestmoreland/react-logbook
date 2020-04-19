@@ -5,12 +5,17 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import muiTheme from './theme/muiTheme';
 import AppNavbar from './components/AppNavbar/AppNavbar';
 
+import PilotLogbook from './components/Logbook/PilotLogbook';
+
 const App = () => {
 	return (
 		<Router>
 			<MuiThemeProvider theme={muiTheme}>
 				<CssBaseline>
 					<AppNavbar />
+					<Switch>
+						<Route exact path="/" component={PilotLogbook}/>
+					</Switch>
 				</CssBaseline>
 			</MuiThemeProvider>
 		</Router>

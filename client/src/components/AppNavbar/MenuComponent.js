@@ -10,8 +10,20 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import ListIcon from '@material-ui/icons/List'
 import FlightIcon from '@material-ui/icons/Flight';
 import AssessmentIcon from '@material-ui/icons/Assessment'
+import { Typography } from '@material-ui/core';
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        color: 'rgba(0,0,0,0.54)'
+    }
+}));
 
 const MenuComponent = ({text, index}) => {
+
+    const theme = useTheme();
+    const classes = useStyles();
 
     // Boolean for the list item collapse menu
     const [open, setOpen] = useState(false);
@@ -58,8 +70,12 @@ const MenuComponent = ({text, index}) => {
             <ListItemIcon>
                 {index === 0 ? <ListIcon /> : index === 1 ? <FlightIcon /> : index === 2 && <AssessmentIcon />}
             </ListItemIcon>
-            <ListItemText primary={text}/>
-            {open ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText>
+                <Typography variant="h6" className={classes.root}>
+                    {text}
+                </Typography>
+            </ListItemText>
+            {open ? <ExpandLess className={classes.root} /> : <ExpandMore className={classes.root} />}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
             <List>
@@ -68,7 +84,7 @@ const MenuComponent = ({text, index}) => {
                 generating a sub-menu for 
                 */}
                 {subMenu[text].map((item) => (
-                    <ListItem component={Link} to={item.path} key={item.text}>
+                    <ListItem color='inherit' component={Link} to={item.path} key={item.text} className="subMenuText">
                         <ListItemText primary={item.text} />
                     </ListItem>
                 ))}

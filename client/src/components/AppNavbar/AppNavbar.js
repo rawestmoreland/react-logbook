@@ -23,10 +23,6 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		display: 'flex',
 	},
-	a: {
-		color: 'black',
-		textDecoration: 'none'
-	},
 	drawer: {
 		[theme.breakpoints.up('sm')]: {
 			width: drawerWidth,
@@ -60,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 const AppNavbar = (props) => {
 	const { container } = props;
 	const classes = useStyles();
-	const theme = useTheme;
+	const theme = useTheme();
 	const [mobileOpen, setMobileOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
