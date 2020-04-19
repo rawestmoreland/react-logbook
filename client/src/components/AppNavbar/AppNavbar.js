@@ -12,6 +12,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import MenuComponent from './MenuComponent';
 
@@ -22,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		display: 'flex',
 	},
+	a: {
+		color: 'black',
+		textDecoration: 'none'
+	},
 	drawer: {
 		[theme.breakpoints.up('sm')]: {
 			width: drawerWidth,
@@ -29,10 +34,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	appBar: {
-		[theme.breakpoints.up('sm')]: {
-			width: `calc(100% - ${drawerWidth}px)`,
-			marginLeft: drawerWidth,
-		},
+		zIndex: theme.zIndex.drawer + 1
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
@@ -49,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		padding: theme.spacing(3),
 	},
+	closeMenuButton: {
+		marginRight: 'auto',
+		marginLeft: 0
+	}
 }));
 
 const AppNavbar = (props) => {
@@ -62,12 +68,14 @@ const AppNavbar = (props) => {
 	};
 
 	// Drawer menu names
-	const menus = ['Flights', 'Aircraft', 'Analysis'];
+	const menus = [
+		'Flights',
+		'Aircraft',
+		'Analysis'
+	]
 
 	const drawer = (
 		<div>
-			<Box className={classes.toolbar} />
-			<Divider />
 			<List>
 				{
 					// Map through the menus and create a MenuComponent for each
@@ -95,11 +103,11 @@ const AppNavbar = (props) => {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant='h6' noWrap>
-						HoursAware
+						Logbook
 					</Typography>
 				</Toolbar>
 			</AppBar>
-			<nav className='classes.drawer' aria-label='menu items'>
+			<nav className={classes.drawer} aria-label='menu items'>
 				<Hidden smUp implementation='css'>
 					<Drawer
 						container={container}
@@ -114,17 +122,22 @@ const AppNavbar = (props) => {
 							keepMounted: true,
 						}}
 					>
+						<IconButton onClick={handleDrawerToggle} className={classes.closeMenuButton}>
+							<CloseIcon />
+						</IconButton>
 						{drawer}
 					</Drawer>
 				</Hidden>
+
 				<Hidden xsDown implementation='css'>
 					<Drawer
+						className={classes.drawer}
 						classes={{
 							paper: classes.drawerPaper,
 						}}
 						variant='permanent'
-						open
 					>
+						<div className={classes.toolbar} />
 						{drawer}
 					</Drawer>
 				</Hidden>

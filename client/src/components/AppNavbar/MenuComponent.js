@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -20,6 +21,37 @@ const MenuComponent = ({text, index}) => {
         setOpen(!open);
     }
 
+    // A sub-menu object with text for the menu item and 
+    // a path for the router.
+    const subMenu = {
+        Flights: [
+            {
+                path: '/',
+                text: 'Pilot Logbook'
+            },
+            {
+                path: '/groundinstruction',
+                text: 'Ground Instruction'
+            },
+            {
+                path: '/certificates',
+                text: 'Certificates / Medical'
+            },
+        ],
+        Aircraft: [
+            {
+                path: '/aircraft',
+                text: 'Aircraft List'
+            }
+        ],
+        Analysis: [
+            {
+                path: '/currency',
+                text: 'Pilot Currency'
+            }
+        ]
+    }
+
     return (
         <>
         <ListItem button aria-controls={index} aria-haspopup="true" onClick={handleClick}>
@@ -30,35 +62,17 @@ const MenuComponent = ({text, index}) => {
             {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
-            {
-                //Conditionally render the submenus based on the index
-                index === 0 ?
-                <List>
-                    {["Pilot Logbook", "Ground Instruction", "Certificates / Medical"].map((text) => (
-                      <ListItem key={text}>
-                          <ListItemText primary={text}/>
-                      </ListItem>  
-                    ))}
-                </List>
-                :
-                index === 1 ? 
-                <List>
-                    {["Aircraft List"].map((text) => (
-                      <ListItem key={text}>
-                          <ListItemText primary={text}/>
-                      </ListItem>  
-                    ))}
-                </List>
-                :
-                index === 2 &&
-                <List>
-                    {["Pilot Currency"].map((text) => (
-                      <ListItem key={text}>
-                          <ListItemText primary={text}/>
-                      </ListItem>  
-                    ))}
-                </List>
-            }
+            <List>
+                {/* 
+                We'll map through the array for the menuItem that we're
+                generating a sub-menu for 
+                */}
+                {subMenu[text].map((item) => (
+                    <ListItem component={Link} to={item.path} key={item.text}>
+                        <ListItemText primary={item.text} />
+                    </ListItem>
+                ))}
+            </List>
         </Collapse>
         </>
     )
