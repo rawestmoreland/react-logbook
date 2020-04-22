@@ -10,7 +10,7 @@ const initialState = {
     loading: false
 }
 
-export default function(state = initialState, action) => {
+export default function(state = initialState, action) {
     switch (action) {
         case GET_AIRCRAFT:
             return {
@@ -23,7 +23,7 @@ export default function(state = initialState, action) => {
                 ...state,
                 aircraft: [action.payload, ...state.aircraft]
             }
-        case DELETE_FLIGHT:
+        case DELETE_AIRCRAFT:
             return {
                 ...state,
                 aircraft: state.aircraft.filter(aircraft => aircraft._id !== action.payload)
