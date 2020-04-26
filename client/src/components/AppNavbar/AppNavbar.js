@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
+import { useStyles } from '../../styles/styles';
+import { Route, Switch } from 'react-router-dom';
 import muiTheme from '../../theme/muiTheme';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,42 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import MenuComponent from './MenuComponent';
 
-const drawerWidth = 240;
 const theme = muiTheme;
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		display: 'flex',
-	},
-	drawer: {
-		[theme.breakpoints.up('sm')]: {
-			width: drawerWidth,
-			flexShrink: 0,
-		},
-	},
-	appBar: {
-		zIndex: theme.zIndex.drawer + 1
-	},
-	menuButton: {
-		marginRight: theme.spacing(2),
-		[theme.breakpoints.up('sm')]: {
-			display: 'none',
-		},
-	},
-	// necessary for content to be below app bar
-	toolbar: theme.mixins.toolbar,
-	drawerPaper: {
-		width: drawerWidth,
-	},
-	content: {
-		flexGrow: 1,
-		padding: theme.spacing(3),
-	},
-	closeMenuButton: {
-		marginRight: 'auto',
-		marginLeft: 0
-	}
-}));
 
 const AppNavbar = (props) => {
 	const { container } = props;
@@ -86,59 +53,59 @@ const AppNavbar = (props) => {
 	);
 
 	return (
-		<div className={classes.root}>
-			<AppBar position='fixed' className={classes.appBar}>
-				<Toolbar>
-					<IconButton
-						color='inherit'
-						aria-label='open drawer'
-						edge='start'
-						onClick={handleDrawerToggle}
-						className={classes.menuButton}
-					>
-						<MenuIcon />
+		<>
+		<AppBar position='fixed' className={classes.appBar}>
+			<Toolbar>
+				<IconButton
+					color='inherit'
+					aria-label='open drawer'
+					edge='start'
+					onClick={handleDrawerToggle}
+					className={classes.menuButton}
+				>
+					<MenuIcon />
+				</IconButton>
+				<Typography variant='h6' noWrap>
+					Logbook
+				</Typography>
+			</Toolbar>
+		</AppBar>
+		<nav className={classes.drawer} aria-label='menu items'>
+			<Hidden smUp implementation='css'>
+				<Drawer
+					container={container}
+					variant='temporary'
+					anchor={theme.directions === 'rtl' ? 'right' : 'left'}
+					open={mobileOpen}
+					onClose={handleDrawerToggle}
+					classes={{
+						paper: classes.drawerPaper,
+					}}
+					ModalProps={{
+						keepMounted: true,
+					}}
+				>
+					<IconButton onClick={handleDrawerToggle} className={classes.closeMenuButton}>
+						<CloseIcon />
 					</IconButton>
-					<Typography variant='h6' noWrap>
-						Logbook
-					</Typography>
-				</Toolbar>
-			</AppBar>
-			<nav className={classes.drawer} aria-label='menu items'>
-				<Hidden smUp implementation='css'>
-					<Drawer
-						container={container}
-						variant='temporary'
-						anchor={theme.directions === 'rtl' ? 'right' : 'left'}
-						open={mobileOpen}
-						onClose={handleDrawerToggle}
-						classes={{
-							paper: classes.drawerPaper,
-						}}
-						ModalProps={{
-							keepMounted: true,
-						}}
-					>
-						<IconButton onClick={handleDrawerToggle} className={classes.closeMenuButton}>
-							<CloseIcon />
-						</IconButton>
-						{drawer}
-					</Drawer>
-				</Hidden>
+					{drawer}
+				</Drawer>
+			</Hidden>
 
-				<Hidden xsDown implementation='css'>
-					<Drawer
-						className={classes.drawer}
-						classes={{
-							paper: classes.drawerPaper,
-						}}
-						variant='permanent'
-					>
-						<div className={classes.toolbar} />
-						{drawer}
-					</Drawer>
-				</Hidden>
-			</nav>
-		</div>
+			<Hidden xsDown implementation='css'>
+				<Drawer
+					className={classes.drawer}
+					classes={{
+						paper: classes.drawerPaper,
+					}}
+					variant='permanent'
+				>
+					<div className={classes.toolbar} />
+					{drawer}
+				</Drawer>
+			</Hidden>
+		</nav>
+		</>
 	);
 };
 

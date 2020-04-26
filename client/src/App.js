@@ -1,9 +1,10 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, AppBar } from '@material-ui/core';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import muiTheme from './theme/muiTheme';
 import AppNavbar from './components/AppNavbar/AppNavbar';
+import { useStyles } from './styles/styles';
 
 // Redux stuff
 import { Provider } from 'react-redux';
@@ -13,15 +14,25 @@ import store from './store';
 import PilotLogbook from './components/Logbook/PilotLogbook';
 
 const App = () => {
+	const classes = useStyles();
+
 	return (
 		<Provider store={store}>
 			<Router>
 				<MuiThemeProvider theme={muiTheme}>
 					<CssBaseline>
-						<AppNavbar />
-						<Switch>
-							<Route exact path="/" component={PilotLogbook}/>
-						</Switch>
+							<div className={classes.root}>
+								{/* The top toolbar and the responsive nav drawer */}
+								<AppNavbar />
+								<main className={classes.content}>
+									{/* We need the main content to appear below the toolbar */}
+									<div className={classes.toolbar}/>
+									{/* Router for navigating the main content */}
+									<Switch>
+										<Route exact path='/'  component={PilotLogbook} />
+									</Switch>
+								</main>
+							</div>
 					</CssBaseline>
 				</MuiThemeProvider>
 			</Router>
