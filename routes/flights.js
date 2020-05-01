@@ -6,8 +6,12 @@ const {
 	deleteFlight,
 	addMany,
 } = require('../controllers/flights');
+const { paginatedResults } = require('../middleware/paginatedResults');
+const Flight = require('../models/Flight');
 
-router.route('/').get(getFlights);
+router.get('/', paginatedResults(Flight), (req, res) => {
+	res.json(res.paginatedResults);
+});
 
 router.route('/').post(addFlight);
 

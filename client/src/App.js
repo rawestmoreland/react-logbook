@@ -1,7 +1,7 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { CssBaseline, AppBar } from '@material-ui/core';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import muiTheme from './theme/muiTheme';
 import AppNavbar from './components/AppNavbar/AppNavbar';
 import { useStyles } from './styles/styles';
@@ -21,18 +21,22 @@ const App = () => {
 			<Router>
 				<MuiThemeProvider theme={muiTheme}>
 					<CssBaseline>
-							<div className={classes.root}>
-								{/* The top toolbar and the responsive nav drawer */}
-								<AppNavbar />
-								<main className={classes.content}>
-									{/* We need the main content to appear below the toolbar */}
-									<div className={classes.toolbar}/>
-									{/* Router for navigating the main content */}
-									<Switch>
-										<Route exact path='/'  component={PilotLogbook} />
-									</Switch>
-								</main>
-							</div>
+						<div className={classes.root}>
+							{/* The top toolbar and the responsive nav drawer */}
+							<AppNavbar />
+							<main className={classes.content}>
+								{/* We need the main content to appear below the toolbar */}
+								<div className={classes.toolbar} />
+								{/* Router for navigating the main content */}
+								<Switch>
+									<Route
+										exact
+										path='/'
+										component={PilotLogbook}
+									/>
+								</Switch>
+							</main>
+						</div>
 					</CssBaseline>
 				</MuiThemeProvider>
 			</Router>
