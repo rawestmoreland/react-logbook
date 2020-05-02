@@ -8,7 +8,7 @@ import {
 const initialState = {
 	flights: [],
 	count: 0,
-	loading: false,
+	loading: true,
 };
 
 export default function (state = initialState, action) {

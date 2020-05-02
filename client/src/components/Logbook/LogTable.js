@@ -64,11 +64,31 @@ const LogTable = () => {
 
 	const handleLastPageButtonClick = (e) => {};
 
-	!loading && console.log(flights);
+	!loading && console.log(flights.results);
+
+	/**
+	 * Get the keys from a flight object to use as the
+	 * column titles.
+	 * TODO: We eventually want to map custom column titles
+	 * to data from the flight object. IE: takeoffs should
+	 * be night and day takeoffs combined and not their own
+	 * columns. Or the user should be able to add custom columns.
+	 */
+	const getKeys = () => {
+		return Object.keys(flights.results[0]);
+	};
 
 	return (
 		<>
-			<MaterialTable></MaterialTable>
+			<MaterialTable
+				stickyHeader
+				isLoading={loading}
+				options={{
+					search: false,
+					showTitle: false,
+				}}
+				columns={}
+			/>
 		</>
 	);
 };
