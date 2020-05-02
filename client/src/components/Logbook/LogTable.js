@@ -64,8 +64,6 @@ const LogTable = () => {
 
 	const handleLastPageButtonClick = (e) => {};
 
-	!loading && console.log(flights.results);
-
 	/**
 	 * Get the keys from a flight object to use as the
 	 * column titles.
@@ -78,16 +76,26 @@ const LogTable = () => {
 		return Object.keys(flights.results[0]);
 	};
 
+	const columnArray = [];
+
+	// Make the columns with title and field keys
+	const makeColumns = () => {
+		getKeys().map((i) => {
+			columnArray.push({ title: i, field: i });
+		});
+	};
+
+	!loading && makeColumns();
+
 	return (
 		<>
 			<MaterialTable
 				stickyHeader
-				isLoading={loading}
 				options={{
 					search: false,
 					showTitle: false,
 				}}
-				columns={}
+				columns={loading ? [] : columnArray}
 			/>
 		</>
 	);
