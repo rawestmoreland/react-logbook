@@ -63,39 +63,98 @@ const LogTable = () => {
 	const handleNextButtonClick = (e) => {};
 
 	const handleLastPageButtonClick = (e) => {};
+    
+    const createFlight = (flight) => {
+		// Combine day and night takeoffs
+		let totalTakeoffs = flight.day_takeoffs + flight.night_takeoffs;
+		let tableFlight = {
+			date: flight.date,
+            aircraft_id: flight.aircraft_id,
+            route: flight.route,
+            takeoffs: totalTakeoffs,
+            day_ldgs: flight.day_ldgs,
+            night_ldgs: flight.night_ldgs,
+			approaches: flight.approaches,
+			single_engine: flight.single_engine,
+			multi_engine: flight.multi_engine,
+			amphibious: flight.amphibious || 0,
+			complex: flight.complex,
+			turbine: flight.turbine,
+			rotocraft: flight.rotocraft,
+			sim: flight.sim,
+			xc: flight.xc,
+			imc: flight.imc,
+			sim_imc: flight.sim_imc,
+			total: flight.total,
+			night: flight.night,
+			pic: flight.pic,
+			sic: flight.sic,
+			dual_recd: flight.dual_recd,
+			dual_given: flight.dual_given,
+			remarks: flight.remarks
+		};
+        return tableFlight;
+	}
 
 	/**
-	 * Get the keys from a flight object to use as the
-	 * column titles.
-	 * TODO: We eventually want to map custom column titles
-	 * to data from the flight object. IE: takeoffs should
-	 * be night and day takeoffs combined and not their own
-	 * columns. Or the user should be able to add custom columns.
+	 * This will be a list of flights generated with the
+	 * createFlight() function. The key / values for this
+	 * flight will be the data that the user sees in the table
+	 * ie: takeoffs will be night and day takoffs combined.
+	 * We use the keys of a flight to use as the field for the
+	 * column
+	 */
+	let flightArray = []
+
+	!loading && flights.results.map(f => {
+		flightArray.push(createFlight(f))
+	});
+
+	// The columns for our table
+	let columnArray = [];
+
+	/**
+	 * The keys from a tableFlight will be used as the 'field'
+	 * value in column creation.
 	 */
 	const getKeys = () => {
-		return Object.keys(flights.results[0]);
+		return Object.keys(flightArray[0]);
 	};
-
-	const columnArray = [];
 
 	// Make the columns with title and field keys
 	const makeColumns = () => {
-		getKeys().map((i) => {
-			columnArray.push({ title: i, field: i });
-		});
+		columns.map((title, index) => {
+			columnArray.push({title: title, field: getKeys()[index]})
+		})
 	};
 
 	!loading && makeColumns();
 
+	/**
+	 * Columns
+	 * The title will be from the columns array
+	 * The field will be from the keys 
+	 */
+
+	 /**
+	  * Data
+	  * The data will be generated with the createFlight
+	  * function
+	  */
+
 	return (
 		<>
 			<MaterialTable
-				stickyHeader
+                stickyHeader
+                isLoading={loading}
 				options={{
 					search: false,
 					showTitle: false,
+					pageSize: limit,
 				}}
-				columns={loading ? [] : columnArray}
+				onRowClick={(evt, selectedRow) => console.log(selectedRow.tableData.id)}
+				columns={columnArray}
+				data={flightArray}
 			/>
 		</>
 	);
