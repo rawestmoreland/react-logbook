@@ -64,8 +64,8 @@ const LogTable = () => {
 	const handleNextButtonClick = (e) => {};
 
 	const handleLastPageButtonClick = (e) => {};
-    
-    const createFlight = (flight) => {
+
+	const createFlight = (flight) => {
 		// Combine day and night takeoffs
 		let totalTakeoffs = flight.day_takeoffs + flight.night_takeoffs;
 		let formattedDate = () => {
@@ -95,10 +95,10 @@ const LogTable = () => {
 			sic: flight.sic,
 			dual_recd: flight.dual_recd,
 			dual_given: flight.dual_given,
-			remarks: flight.remarks
+			remarks: flight.remarks,
 		};
-        return tableFlight;
-	}
+		return tableFlight;
+	};
 
 	/**
 	 * This will be a list of flights generated with the
@@ -108,11 +108,12 @@ const LogTable = () => {
 	 * We use the keys of a flight to use as the field for the
 	 * column
 	 */
-	let flightArray = []
+	let flightArray = [];
 
-	!loading && flights.results.map(f => {
-		flightArray.push(createFlight(f))
-	});
+	!loading &&
+		flights.results.map((f) => {
+			flightArray.push(createFlight(f));
+		});
 
 	// The columns for our table
 	let columnArray = [];
@@ -128,8 +129,8 @@ const LogTable = () => {
 	// Make the columns with title and field keys
 	const makeColumns = () => {
 		columns.map((title, index) => {
-			columnArray.push({title: title, field: getKeys()[index]})
-		})
+			columnArray.push({ title: title, field: getKeys()[index] });
+		});
 	};
 
 	!loading && makeColumns();
@@ -149,7 +150,9 @@ const LogTable = () => {
 					},
 					padding: 'dense'
 				}}
-				onRowClick={(evt, selectedRow) => console.log(selectedRow.tableData.id)}
+				onRowClick={(evt, selectedRow) =>
+					console.log(selectedRow.tableData.id)
+				}
 				columns={columnArray}
 				data={flightArray}
 			/>
