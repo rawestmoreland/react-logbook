@@ -3,8 +3,9 @@ import { useSelector, useDispatch, connect } from 'react-redux';
 import { useStyles } from '../../styles/styles';
 import { getFlights } from '../../actions/flightActions';
 import MaterialTable from 'material-table';
+import Moment from 'react-moment';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, TablePagination } from '@material-ui/core';
 
 const LogTable = () => {
 	const classes = useStyles();
@@ -19,7 +20,7 @@ const LogTable = () => {
 
 	// Pagination variables
 	// Page we're on in the table
-	const [page, setPage] = useState(8);
+	const [page, setPage] = useState(1);
 	// Number of rows per page
 	const [limit, setLimit] = useState(10);
 
@@ -67,8 +68,11 @@ const LogTable = () => {
     const createFlight = (flight) => {
 		// Combine day and night takeoffs
 		let totalTakeoffs = flight.day_takeoffs + flight.night_takeoffs;
+		let formattedDate = () => {
+			return <><Moment date={flight.date} format={'MMMM D, YYYY'} /></>
+		}
 		let tableFlight = {
-			date: flight.date,
+			date: formattedDate(),
             aircraft_id: flight.aircraft_id,
             route: flight.route,
             takeoffs: totalTakeoffs,
@@ -130,27 +134,20 @@ const LogTable = () => {
 
 	!loading && makeColumns();
 
-	/**
-	 * Columns
-	 * The title will be from the columns array
-	 * The field will be from the keys 
-	 */
-
-	 /**
-	  * Data
-	  * The data will be generated with the createFlight
-	  * function
-	  */
-
 	return (
 		<>
 			<MaterialTable
-                stickyHeader
-                isLoading={loading}
+				isLoading={loading}
 				options={{
-					search: false,
-					showTitle: false,
+					toolbar: false,
 					pageSize: limit,
+					headerStyle: {
+						textAlign: 'center',
+						textTransform: 'uppercase',
+						backgroundColor: '#000',
+						color: '#FFF'
+					},
+					padding: 'dense'
 				}}
 				onRowClick={(evt, selectedRow) => console.log(selectedRow.tableData.id)}
 				columns={columnArray}
