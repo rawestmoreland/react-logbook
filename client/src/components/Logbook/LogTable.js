@@ -63,17 +63,17 @@ const LogTable = () => {
 	const handleNextButtonClick = (e) => {};
 
 	const handleLastPageButtonClick = (e) => {};
-    
-    const createFlight = (flight) => {
+
+	const createFlight = (flight) => {
 		// Combine day and night takeoffs
 		let totalTakeoffs = flight.day_takeoffs + flight.night_takeoffs;
 		let tableFlight = {
 			date: flight.date,
-            aircraft_id: flight.aircraft_id,
-            route: flight.route,
-            takeoffs: totalTakeoffs,
-            day_ldgs: flight.day_ldgs,
-            night_ldgs: flight.night_ldgs,
+			aircraft_id: flight.aircraft_id,
+			route: flight.route,
+			takeoffs: totalTakeoffs,
+			day_ldgs: flight.day_ldgs,
+			night_ldgs: flight.night_ldgs,
 			approaches: flight.approaches,
 			single_engine: flight.single_engine,
 			multi_engine: flight.multi_engine,
@@ -91,10 +91,10 @@ const LogTable = () => {
 			sic: flight.sic,
 			dual_recd: flight.dual_recd,
 			dual_given: flight.dual_given,
-			remarks: flight.remarks
+			remarks: flight.remarks,
 		};
-        return tableFlight;
-	}
+		return tableFlight;
+	};
 
 	/**
 	 * This will be a list of flights generated with the
@@ -104,11 +104,12 @@ const LogTable = () => {
 	 * We use the keys of a flight to use as the field for the
 	 * column
 	 */
-	let flightArray = []
+	let flightArray = [];
 
-	!loading && flights.results.map(f => {
-		flightArray.push(createFlight(f))
-	});
+	!loading &&
+		flights.results.map((f) => {
+			flightArray.push(createFlight(f));
+		});
 
 	// The columns for our table
 	let columnArray = [];
@@ -124,8 +125,8 @@ const LogTable = () => {
 	// Make the columns with title and field keys
 	const makeColumns = () => {
 		columns.map((title, index) => {
-			columnArray.push({title: title, field: getKeys()[index]})
-		})
+			columnArray.push({ title: title, field: getKeys()[index] });
+		});
 	};
 
 	!loading && makeColumns();
@@ -133,26 +134,28 @@ const LogTable = () => {
 	/**
 	 * Columns
 	 * The title will be from the columns array
-	 * The field will be from the keys 
+	 * The field will be from the keys
 	 */
 
-	 /**
-	  * Data
-	  * The data will be generated with the createFlight
-	  * function
-	  */
+	/**
+	 * Data
+	 * The data will be generated with the createFlight
+	 * function
+	 */
 
 	return (
 		<>
 			<MaterialTable
-                stickyHeader
-                isLoading={loading}
+				stickyHeader
+				isLoading={loading}
 				options={{
 					search: false,
 					showTitle: false,
 					pageSize: limit,
 				}}
-				onRowClick={(evt, selectedRow) => console.log(selectedRow.tableData.id)}
+				onRowClick={(evt, selectedRow) =>
+					console.log(selectedRow.tableData.id)
+				}
 				columns={columnArray}
 				data={flightArray}
 			/>
