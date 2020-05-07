@@ -3,13 +3,13 @@ import { useSelector, useDispatch, connect } from 'react-redux';
 import { useStyles } from '../../styles/styles';
 import { getFlights } from '../../actions/flightActions';
 import MaterialTable from 'material-table';
-import Moment from 'react-moment';
+import moment from 'moment';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography, TablePagination } from '@material-ui/core';
 
 const LogTable = () => {
 	const classes = useStyles();
-	const theme = useTheme();
+	const tableTheme = useTheme();
 
 	// Map state to props
 	const flights = useSelector((state) => state.flight.flights);
@@ -22,7 +22,7 @@ const LogTable = () => {
 	// Page we're on in the table
 	const [page, setPage] = useState(1);
 	// Number of rows per page
-	const [limit, setLimit] = useState(10);
+	const [limit, setLimit] = useState(30);
 
 	// Column names
 	const columns = [
@@ -68,16 +68,13 @@ const LogTable = () => {
 	const createFlight = (flight) => {
 		// Combine day and night takeoffs
 		let totalTakeoffs = flight.day_takeoffs + flight.night_takeoffs;
-		let formattedDate = () => {
-			return <><Moment date={flight.date} format={'MMMM D, YYYY'} /></>
-		}
 		let tableFlight = {
-			date: formattedDate(),
-            aircraft_id: flight.aircraft_id,
-            route: flight.route,
-            takeoffs: totalTakeoffs,
-            day_ldgs: flight.day_ldgs,
-            night_ldgs: flight.night_ldgs,
+			date: flight.date,
+			aircraft_id: flight.aircraft_id,
+			route: flight.route,
+			takeoffs: totalTakeoffs,
+			day_ldgs: flight.day_ldgs,
+			night_ldgs: flight.night_ldgs,
 			approaches: flight.approaches,
 			single_engine: flight.single_engine,
 			multi_engine: flight.multi_engine,
@@ -129,7 +126,19 @@ const LogTable = () => {
 	// Make the columns with title and field keys
 	const makeColumns = () => {
 		columns.map((title, index) => {
-			columnArray.push({ title: title, field: getKeys()[index] });
+			// For the date column, we need to turn the string date into a Date()
+			// and sort based on that value since we cannot sort a string date.
+			if (title === 'date') {
+				columnArray.push({
+					title: title,
+					field: getKeys()[index],
+					render: (rowData) => (
+						<div>{moment(rowData.date).format('LL')}</div>
+					),
+				});
+			} else {
+				columnArray.push({ title: title, field: getKeys()[index] });
+			}
 		});
 	};
 
@@ -138,21 +147,22 @@ const LogTable = () => {
 	return (
 		<>
 			<MaterialTable
+				style={{ width: '85vw' }}
 				isLoading={loading}
 				options={{
+					maxBodyHeight: '80vh',
 					toolbar: false,
 					pageSize: limit,
 					headerStyle: {
+						position: 'sticky',
+						top: 0,
 						textAlign: 'center',
 						textTransform: 'uppercase',
 						backgroundColor: '#000',
-						color: '#FFF'
+						color: '#FFF',
 					},
-					padding: 'dense'
+					padding: 'dense',
 				}}
-				onRowClick={(evt, selectedRow) =>
-					console.log(selectedRow.tableData.id)
-				}
 				columns={columnArray}
 				data={flightArray}
 			/>

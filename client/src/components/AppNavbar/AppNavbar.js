@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { useStyles } from '../../styles/styles';
 import { Route, Switch } from 'react-router-dom';
-import muiTheme from '../../theme/muiTheme';
+import { customTheme } from '../../theme/muiTheme';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Divider from '@material-ui/core/Divider';
@@ -18,7 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import MenuComponent from './MenuComponent';
 
-const theme = muiTheme;
+const theme = customTheme;
 
 const AppNavbar = (props) => {
 	const { container } = props;
@@ -31,22 +31,16 @@ const AppNavbar = (props) => {
 	};
 
 	// Drawer menu names
-	const menus = [
-		'Flights',
-		'Aircraft',
-		'Analysis'
-	]
+	const menus = ['Flights', 'Aircraft', 'Analysis'];
 
 	const drawer = (
 		<div>
 			<List>
 				{
 					// Map through the menus and create a MenuComponent for each
-					menus.map(
-						(text, index) => (
-							<MenuComponent key={text} index={index} text={text} />
-						)
-					)
+					menus.map((text, index) => (
+						<MenuComponent key={text} index={index} text={text} />
+					))
 				}
 			</List>
 		</div>
@@ -54,57 +48,60 @@ const AppNavbar = (props) => {
 
 	return (
 		<>
-		<AppBar position='fixed' className={classes.appBar}>
-			<Toolbar>
-				<IconButton
-					color='inherit'
-					aria-label='open drawer'
-					edge='start'
-					onClick={handleDrawerToggle}
-					className={classes.menuButton}
-				>
-					<MenuIcon />
-				</IconButton>
-				<Typography variant='h6' noWrap>
-					Logbook
-				</Typography>
-			</Toolbar>
-		</AppBar>
-		<nav className={classes.drawer} aria-label='menu items'>
-			<Hidden smUp implementation='css'>
-				<Drawer
-					container={container}
-					variant='temporary'
-					anchor={theme.directions === 'rtl' ? 'right' : 'left'}
-					open={mobileOpen}
-					onClose={handleDrawerToggle}
-					classes={{
-						paper: classes.drawerPaper,
-					}}
-					ModalProps={{
-						keepMounted: true,
-					}}
-				>
-					<IconButton onClick={handleDrawerToggle} className={classes.closeMenuButton}>
-						<CloseIcon />
+			<AppBar position='fixed' className={classes.appBar}>
+				<Toolbar>
+					<IconButton
+						color='inherit'
+						aria-label='open drawer'
+						edge='start'
+						onClick={handleDrawerToggle}
+						className={classes.menuButton}
+					>
+						<MenuIcon />
 					</IconButton>
-					{drawer}
-				</Drawer>
-			</Hidden>
+					<Typography variant='h6' noWrap>
+						Logbook
+					</Typography>
+				</Toolbar>
+			</AppBar>
+			<nav className={classes.drawer} aria-label='menu items'>
+				<Hidden smUp implementation='css'>
+					<Drawer
+						container={container}
+						variant='temporary'
+						anchor={theme.directions === 'rtl' ? 'right' : 'left'}
+						open={mobileOpen}
+						onClose={handleDrawerToggle}
+						classes={{
+							paper: classes.drawerPaper,
+						}}
+						ModalProps={{
+							keepMounted: true,
+						}}
+					>
+						<IconButton
+							onClick={handleDrawerToggle}
+							className={classes.closeMenuButton}
+						>
+							<CloseIcon />
+						</IconButton>
+						{drawer}
+					</Drawer>
+				</Hidden>
 
-			<Hidden xsDown implementation='css'>
-				<Drawer
-					className={classes.drawer}
-					classes={{
-						paper: classes.drawerPaper,
-					}}
-					variant='permanent'
-				>
-					<div className={classes.toolbar} />
-					{drawer}
-				</Drawer>
-			</Hidden>
-		</nav>
+				<Hidden xsDown implementation='css'>
+					<Drawer
+						className={classes.drawer}
+						classes={{
+							paper: classes.drawerPaper,
+						}}
+						variant='permanent'
+					>
+						<div className={classes.toolbar} />
+						{drawer}
+					</Drawer>
+				</Hidden>
+			</nav>
 		</>
 	);
 };

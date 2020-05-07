@@ -4,7 +4,7 @@ const drawerWidth = 240;
 
 export const useStyles = makeStyles((theme) => ({
 	root: {
-		display: 'flex'
+		display: 'flex',
 	},
 	drawer: {
 		[theme.breakpoints.up('sm')]: {
@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme) => ({
 		},
 	},
 	appBar: {
-		zIndex: theme.zIndex.drawer + 1
+		zIndex: theme.zIndex.drawer + 1,
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
@@ -32,6 +32,6 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	closeMenuButton: {
 		marginRight: 'auto',
-		marginLeft: 0
-	}
+		marginLeft: 0,
+	},
 }));

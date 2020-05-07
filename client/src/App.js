@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { CssBaseline, AppBar } from '@material-ui/core';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import muiTheme from './theme/muiTheme';
+import { customTheme } from './theme/muiTheme';
 import AppNavbar from './components/AppNavbar/AppNavbar';
 import { useStyles } from './styles/styles';
 
@@ -15,11 +15,12 @@ import PilotLogbook from './components/Logbook/PilotLogbook';
 
 const App = () => {
 	const classes = useStyles();
+	const theme = customTheme;
 
 	return (
 		<Provider store={store}>
 			<Router>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={theme}>
 					<CssBaseline>
 						<div className={classes.root}>
 							{/* The top toolbar and the responsive nav drawer */}
