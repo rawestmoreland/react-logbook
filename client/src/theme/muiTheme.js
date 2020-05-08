@@ -7,9 +7,12 @@ export const customTheme = createMuiTheme({
 				'&:hover': {
 					color: 'grey',
 				},
-			},
-			active: {
-				color: 'grey',
+				'&$active': {
+					color: 'grey',
+					'&& $icon': {
+						color: 'grey',
+					},
+				},
 			},
 		},
 	},
