@@ -15,6 +15,11 @@ export const customTheme = createMuiTheme({
 				},
 			},
 		},
+		MuiTablePagination: {
+			spacer: {
+				flex: 'none',
+			},
+		},
 	},
 	typography: {
 		useNextVariants: true,

@@ -9,9 +9,11 @@ const {
 const { paginatedResults } = require('../middleware/paginatedResults');
 const Flight = require('../models/Flight');
 
-router.get('/', paginatedResults(Flight), (req, res) => {
-	res.json(res.paginatedResults);
-});
+// router.get('/', paginatedResults(Flight), (req, res) => {
+// 	res.json(res.paginatedResults);
+// });
+
+router.route('/').get(getFlights);
 
 router.route('/').post(addFlight);
 

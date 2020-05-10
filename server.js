@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Get our port (default 5000)
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 
 // Start the server
 app.listen(

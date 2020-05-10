@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useStyles } from '../../styles/styles';
 import { getFlights } from '../../actions/flightActions';
 import MaterialTable from 'material-table';
 import moment from 'moment';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Typography, TablePagination } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import { Tooltip } from '@material-ui/core';
 
 const LogTable = () => {
-	const classes = useStyles();
-	const tableTheme = useTheme();
-
 	// Map state to props
 	const flights = useSelector((state) => state.flight.flights);
 	const loading = useSelector((state) => state.flight.loading);
@@ -22,7 +19,7 @@ const LogTable = () => {
 	// Page we're on in the table
 	const [page, setPage] = useState(1);
 	// Number of rows per page
-	const [limit, setLimit] = useState(30);
+	const [limit, setLimit] = useState(20);
 
 	// Column names
 	const columns = [
@@ -108,7 +105,7 @@ const LogTable = () => {
 	let flightArray = [];
 
 	!loading &&
-		flights.results.map((f) => {
+		flights.data.map((f) => {
 			flightArray.push(createFlight(f));
 		});
 
@@ -126,14 +123,35 @@ const LogTable = () => {
 	// Make the columns with title and field keys
 	const makeColumns = () => {
 		columns.map((title, index) => {
-			// For the date column, we need to turn the string date into a Date()
-			// and sort based on that value since we cannot sort a string date.
+			/**
+			 * For the date column, we need to turn the string date into a Date()
+			 * and sort based on that value since we cannot sort a string date.
+			 */
 			if (title === 'date') {
 				columnArray.push({
 					title: title,
 					field: getKeys()[index],
 					render: (rowData) => (
 						<div>{moment(rowData.date).format('LL')}</div>
+					),
+				});
+			} else if (title === 'remarks') {
+				columnArray.push({
+					title: title,
+					field: getKeys()[index],
+					cellStyle: {
+						maxWidth: 300,
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						whiteSpace: 'nowrap',
+					},
+					/**
+					 * Create a div with a tooltip. Tooltip will display full contents of remarks
+					 */
+					render: (rowData) => (
+						<Tooltip title={rowData.remarks}>
+							<span>{rowData.remarks}</span>
+						</Tooltip>
 					),
 				});
 			} else {
@@ -147,12 +165,12 @@ const LogTable = () => {
 	return (
 		<>
 			<MaterialTable
-				style={{ width: '85vw' }}
 				isLoading={loading}
 				options={{
-					maxBodyHeight: '80vh',
+					maxBodyHeight: '85vh',
 					toolbar: false,
-					pageSize: limit,
+					pageSize: 15,
+					pageSizeOptions: [20],
 					headerStyle: {
 						position: 'sticky',
 						top: 0,

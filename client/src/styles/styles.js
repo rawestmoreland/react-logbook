@@ -29,6 +29,8 @@ export const useStyles = makeStyles((theme) => ({
 	content: {
 		flexGrow: 1,
 		padding: theme.spacing(3),
+		width: '20vw',
+		height: '85vh',
 	},
 	closeMenuButton: {
 		marginRight: 'auto',

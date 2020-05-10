@@ -7,7 +7,6 @@ import {
 
 const initialState = {
 	flights: [],
-	count: 0,
 	loading: true,
 };
 
