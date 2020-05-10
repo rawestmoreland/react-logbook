@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useStyles } from '../../styles/styles';
 import { getFlights } from '../../actions/flightActions';
-import MaterialTable from 'material-table';
-import moment from 'moment';
-import { useTheme } from '@material-ui/core/styles';
-import { Tooltip } from '@material-ui/core';
 
 const LogTable = () => {
 	// Map state to props
@@ -94,98 +89,7 @@ const LogTable = () => {
 		return tableFlight;
 	};
 
-	/**
-	 * This will be a list of flights generated with the
-	 * createFlight() function. The key / values for this
-	 * flight will be the data that the user sees in the table
-	 * ie: takeoffs will be night and day takoffs combined.
-	 * We use the keys of a flight to use as the field for the
-	 * column
-	 */
-	let flightArray = [];
-
-	!loading &&
-		flights.data.map((f) => {
-			flightArray.push(createFlight(f));
-		});
-
-	// The columns for our table
-	let columnArray = [];
-
-	/**
-	 * The keys from a tableFlight will be used as the 'field'
-	 * value in column creation.
-	 */
-	const getKeys = () => {
-		return Object.keys(flightArray[0]);
-	};
-
-	// Make the columns with title and field keys
-	const makeColumns = () => {
-		columns.map((title, index) => {
-			/**
-			 * For the date column, we need to turn the string date into a Date()
-			 * and sort based on that value since we cannot sort a string date.
-			 */
-			if (title === 'date') {
-				columnArray.push({
-					title: title,
-					field: getKeys()[index],
-					render: (rowData) => (
-						<div>{moment(rowData.date).format('LL')}</div>
-					),
-				});
-			} else if (title === 'remarks') {
-				columnArray.push({
-					title: title,
-					field: getKeys()[index],
-					cellStyle: {
-						maxWidth: 300,
-						overflow: 'hidden',
-						textOverflow: 'ellipsis',
-						whiteSpace: 'nowrap',
-					},
-					/**
-					 * Create a div with a tooltip. Tooltip will display full contents of remarks
-					 */
-					render: (rowData) => (
-						<Tooltip title={rowData.remarks}>
-							<span>{rowData.remarks}</span>
-						</Tooltip>
-					),
-				});
-			} else {
-				columnArray.push({ title: title, field: getKeys()[index] });
-			}
-		});
-	};
-
-	!loading && makeColumns();
-
-	return (
-		<>
-			<MaterialTable
-				isLoading={loading}
-				options={{
-					maxBodyHeight: '85vh',
-					toolbar: false,
-					pageSize: 15,
-					pageSizeOptions: [20],
-					headerStyle: {
-						position: 'sticky',
-						top: 0,
-						textAlign: 'center',
-						textTransform: 'uppercase',
-						backgroundColor: '#000',
-						color: '#FFF',
-					},
-					padding: 'dense',
-				}}
-				columns={columnArray}
-				data={flightArray}
-			/>
-		</>
-	);
+	return <></>;
 };
 
 export default LogTable;
