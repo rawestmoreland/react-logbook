@@ -25,7 +25,7 @@ const LogTable = () => {
 	// Page we're on in the table
 	const [page, setPage] = useState(1);
 	// Number of rows per page
-	const [rowsPerPage, setRowsPerPage] = useState(20);
+	const [rowsPerPage, setRowsPerPage] = useState(25);
 
 	// Column names
 	const columns = [
