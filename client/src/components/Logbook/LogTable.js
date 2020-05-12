@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFlights } from '../../actions/flightActions';
 import { logTableStyles } from '../../styles/LogTableStyles';
+import moment from 'moment';
 import LogTablePagination from './LogTablePagination';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -23,13 +24,17 @@ const LogTable = () => {
 
 	// Pagination variables
 	// Page we're on in the table
-	const [page, setPage] = useState(1);
+	const [page, setPage] = useState(0);
 	// Number of rows per page
 	const [rowsPerPage, setRowsPerPage] = useState(25);
 
 	// Column names
 	const columns = [
-		{ id: 'date', label: 'date' },
+		{
+			id: 'date',
+			label: 'date',
+			format: (value) => moment(value).format('ll'),
+		},
 		{ id: 'aircraft_id', label: 'aircraft id' },
 		{ id: 'route', label: 'route' },
 		{ id: 't/o', label: 't/o' },
@@ -52,7 +57,16 @@ const LogTable = () => {
 		{ id: 'sic', label: 'sic' },
 		{ id: 'dual_recd', label: 'dual recd' },
 		{ id: 'dual_given', label: 'dual given' },
-		{ id: 'remarks', label: 'remarks' },
+		{
+			id: 'remarks',
+			label: 'remarks',
+			style: {
+				maxWidth: 300,
+				textOverflow: 'ellipsis',
+				overflow: 'hidden',
+				whiteSpace: 'nowrap',
+			},
+		},
 	];
 
 	useEffect(() => {
@@ -65,7 +79,7 @@ const LogTable = () => {
 	};
 
 	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(+event.target.value);
+		setRowsPerPage(+event.target.value, 10);
 		setPage(0);
 	};
 
@@ -109,6 +123,11 @@ const LogTable = () => {
 	!loading &&
 		flights.map((flight) => tableFlights.push(createFlight(flight)));
 
+	// Handle the empty rows to fill the table out
+	const emptyRows =
+		rowsPerPage -
+		Math.min(rowsPerPage, tableFlights.length - page * rowsPerPage);
+
 	return (
 		<>
 			<Paper className={classes.root}>
@@ -141,14 +160,30 @@ const LogTable = () => {
 											{columns.map((column) => {
 												const value = row[column.id];
 												return (
-													<TableCell key={column.id}>
-														{value}
+													<TableCell
+														key={column.id}
+														style={
+															column.style
+																? column.style
+																: null
+														}
+													>
+														{column.format
+															? column.format(
+																	value
+															  )
+															: value}
 													</TableCell>
 												);
 											})}
 										</TableRow>
 									);
 								})}
+							{emptyRows > 0 && (
+								<TableRow style={{ height: 53 * emptyRows }}>
+									<TableCell colSpan={6} />
+								</TableRow>
+							)}
 						</TableBody>
 					</Table>
 				</TableContainer>
