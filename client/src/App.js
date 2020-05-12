@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { CssBaseline, AppBar } from '@material-ui/core';
+import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { customTheme } from './theme/muiTheme';
 import AppNavbar from './components/AppNavbar/AppNavbar';
