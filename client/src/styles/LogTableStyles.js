@@ -7,4 +7,7 @@ export const logTableStyles = makeStyles((theme) => ({
 	container: {
 		maxHeight: '85vh',
 	},
+	topHeader: {
+		height: 80,
+	},
 }));

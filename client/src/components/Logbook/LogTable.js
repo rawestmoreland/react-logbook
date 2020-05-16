@@ -12,12 +12,14 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { parse } from 'fast-csv';
 
 const LogTable = () => {
 	// Styles for the log table
 	const classes = logTableStyles();
 	// Map state to props
 	const flights = useSelector((state) => state.flight.flights.data);
+	const totals = useSelector((state) => state.flight.flights.totals);
 	const loading = useSelector((state) => state.flight.loading);
 	// Initialize useDispatch
 	const dispatch = useDispatch();
@@ -34,10 +36,19 @@ const LogTable = () => {
 			id: 'date',
 			label: 'date',
 			format: (value) => moment(value).format('ll'),
+			style: {
+				whiteSpace: 'nowrap',
+			},
 		},
 		{ id: 'aircraft_id', label: 'aircraft id' },
-		{ id: 'route', label: 'route' },
-		{ id: 't/o', label: 't/o' },
+		{
+			id: 'route',
+			label: 'route',
+			style: {
+				whiteSpace: 'nowrap',
+			},
+		},
+		{ id: 'takeoffs', label: 't/o' },
 		{ id: 'day_ldgs', label: 'day ldgs' },
 		{ id: 'night_ldgs', label: 'night ldgs' },
 		{ id: 'iap', label: 'iap' },
@@ -48,10 +59,10 @@ const LogTable = () => {
 		{ id: 'turbine', label: 'turbine' },
 		{ id: 'rotocraft', label: 'rotocraft' },
 		{ id: 'flt_sim', label: 'flt sim' },
-		{ id: 'x/c', label: 'x/c' },
+		{ id: 'xc', label: 'x/c' },
 		{ id: 'imc', label: 'imc' },
-		{ id: 'sim_inst', label: 'sim inst' },
-		{ id: 'total_time', label: 'total time' },
+		{ id: 'sim_imc', label: 'sim inst' },
+		{ id: 'total', label: 'total time' },
 		{ id: 'night', label: 'night' },
 		{ id: 'pic', label: 'pic' },
 		{ id: 'sic', label: 'sic' },
@@ -94,14 +105,14 @@ const LogTable = () => {
 			takeoffs: totalTakeoffs,
 			day_ldgs: flight.day_ldgs,
 			night_ldgs: flight.night_ldgs,
-			approaches: flight.approaches,
-			single_engine: flight.single_engine,
-			multi_engine: flight.multi_engine,
+			iap: flight.approaches,
+			se: flight.single_engine,
+			me: flight.multi_engine,
 			amphibious: flight.amphibious || 0,
 			complex: flight.complex,
 			turbine: flight.turbine,
 			rotocraft: flight.rotocraft,
-			sim: flight.sim,
+			flt_sim: flight.sim,
 			xc: flight.xc,
 			imc: flight.imc,
 			sim_imc: flight.sim_imc,
@@ -112,6 +123,39 @@ const LogTable = () => {
 			dual_recd: flight.dual_recd,
 			dual_given: flight.dual_given,
 			remarks: flight.remarks,
+		};
+		return tableFlight;
+	};
+
+	const parseTotals = (flight) => {
+		// Combine day and night takeoffs
+		let totalTakeoffs = flight.day_takeoffs + flight.night_takeoffs;
+		let tableFlight = {
+			id: flight._id || '',
+			date: '',
+			aircraft_id: '',
+			route: '',
+			takeoffs: totalTakeoffs,
+			day_ldgs: flight.day_ldgs,
+			night_ldgs: flight.night_ldgs,
+			iap: flight.approaches,
+			se: flight.single_engine,
+			me: flight.multi_engine,
+			amphibious: flight.amphibious || 0,
+			complex: flight.complex,
+			turbine: flight.turbine,
+			rotocraft: flight.rotocraft,
+			flt_sim: flight.sim,
+			xc: flight.xc,
+			imc: flight.imc,
+			sim_imc: flight.sim_imc,
+			total: flight.total,
+			night: flight.night,
+			pic: flight.pic,
+			sic: flight.sic,
+			dual_recd: flight.dual_recd,
+			dual_given: flight.dual_given,
+			remarks: '',
 		};
 		return tableFlight;
 	};
@@ -132,9 +176,9 @@ const LogTable = () => {
 		<>
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>
-					<Table stickyHeader size='small'>
+					<Table stickyHeader>
 						<TableHead>
-							<TableRow>
+							<TableRow className={classes.topHeader}>
 								{columns.map((column) => (
 									<TableCell
 										key={column.id}
@@ -144,6 +188,19 @@ const LogTable = () => {
 										}}
 									>
 										{column.label}
+									</TableCell>
+								))}
+							</TableRow>
+							<TableRow>
+								{columns.map((column) => (
+									<TableCell
+										key={column.label}
+										style={{
+											top: 80,
+										}}
+									>
+										{!loading &&
+											parseTotals(totals[0])[column.id]}
 									</TableCell>
 								))}
 							</TableRow>
