@@ -30,10 +30,17 @@ export const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		padding: theme.spacing(3),
 		width: '20vw',
-		height: '85vh',
 	},
 	closeMenuButton: {
 		marginRight: 'auto',
 		marginLeft: 0,
+	},
+	logMenuContainer: {
+		marginBottom: 15,
+	},
+	addButton: {
+		color: 'white',
+		backgroundColor: 'green',
+		marginRight: 15,
 	},
 }));

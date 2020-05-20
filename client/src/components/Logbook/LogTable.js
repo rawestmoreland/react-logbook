@@ -1,85 +1,126 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useStyles } from '../../styles/styles';
 import { getFlights } from '../../actions/flightActions';
-import MaterialTable from 'material-table';
+import { logTableStyles } from '../../styles/LogTableStyles';
 import moment from 'moment';
-import { useTheme } from '@material-ui/core/styles';
-import { Tooltip } from '@material-ui/core';
+import LogTablePagination from './LogTablePagination';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
+import GridLoader from 'react-spinners/GridLoader';
 
 const LogTable = () => {
+	// Styles for the log table
+	const classes = logTableStyles();
 	// Map state to props
-	const flights = useSelector((state) => state.flight.flights);
+	const flights = useSelector((state) => state.flight.flights.data);
+	const totals = useSelector((state) => state.flight.flights.totals);
 	const loading = useSelector((state) => state.flight.loading);
-	const count = flights.count;
 	// Initialize useDispatch
 	const dispatch = useDispatch();
 
 	// Pagination variables
 	// Page we're on in the table
-	const [page, setPage] = useState(1);
+	const [page, setPage] = useState(0);
 	// Number of rows per page
-	const [limit, setLimit] = useState(20);
+	const [rowsPerPage, setRowsPerPage] = useState(20);
 
 	// Column names
 	const columns = [
-		'date',
-		'aircraft id',
-		'route',
-		't/o',
-		'day ldgs',
-		'night ldgs',
-		'iap',
-		'se',
-		'me',
-		'amphibious',
-		'complex',
-		'turbine',
-		'rotocraft',
-		'flt sim',
-		'x/c',
-		'imc',
-		'sim inst',
-		'total time',
-		'night',
-		'pic',
-		'sic',
-		'dual recd',
-		'dual given',
-		'remarks',
+		{
+			id: 'date',
+			label: 'date',
+			format: (value) => moment(value).format('ll'),
+			style: {
+				whiteSpace: 'nowrap',
+			},
+		},
+		{ id: 'aircraft_id', label: 'aircraft id' },
+		{
+			id: 'route',
+			label: 'route',
+			style: {
+				whiteSpace: 'nowrap',
+			},
+		},
+		{ id: 'takeoffs', label: 't/o' },
+		{ id: 'day_ldgs', label: 'day ldgs' },
+		{ id: 'night_ldgs', label: 'night ldgs' },
+		{ id: 'iap', label: 'iap' },
+		{ id: 'se', label: 'se' },
+		{ id: 'me', label: 'me' },
+		{ id: 'amphibious', label: 'amphibious' },
+		{ id: 'complex', label: 'complex' },
+		{ id: 'turbine', label: 'turbine' },
+		{ id: 'rotocraft', label: 'rotocraft' },
+		{ id: 'flt_sim', label: 'flt sim' },
+		{ id: 'xc', label: 'x/c' },
+		{ id: 'imc', label: 'imc' },
+		{ id: 'sim_imc', label: 'sim inst' },
+		{ id: 'total', label: 'total time' },
+		{ id: 'night', label: 'night' },
+		{ id: 'pic', label: 'pic' },
+		{ id: 'sic', label: 'sic' },
+		{ id: 'dual_recd', label: 'dual recd' },
+		{ id: 'dual_given', label: 'dual given' },
+		{
+			id: 'remarks',
+			label: 'remarks',
+			style: {
+				maxWidth: 300,
+				textOverflow: 'ellipsis',
+				overflow: 'hidden',
+				whiteSpace: 'nowrap',
+			},
+			format: (value) => {
+				return (
+					<Tooltip title={value}>
+						<div>{value}</div>
+					</Tooltip>
+				);
+			},
+		},
 	];
 
 	useEffect(() => {
 		// Let's get some flights - paginated of course
-		dispatch(getFlights(page, limit));
+		dispatch(getFlights(page, rowsPerPage));
 	}, []);
 
-	const handleFirstPageButtonClick = (e) => {};
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage);
+	};
 
-	const handleBackButtonClick = (e) => {};
-
-	const handleNextButtonClick = (e) => {};
-
-	const handleLastPageButtonClick = (e) => {};
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(+event.target.value, 10);
+		setPage(0);
+	};
 
 	const createFlight = (flight) => {
 		// Combine day and night takeoffs
 		let totalTakeoffs = flight.day_takeoffs + flight.night_takeoffs;
 		let tableFlight = {
+			id: flight._id,
 			date: flight.date,
 			aircraft_id: flight.aircraft_id,
 			route: flight.route,
 			takeoffs: totalTakeoffs,
 			day_ldgs: flight.day_ldgs,
 			night_ldgs: flight.night_ldgs,
-			approaches: flight.approaches,
-			single_engine: flight.single_engine,
-			multi_engine: flight.multi_engine,
+			iap: flight.approaches,
+			se: flight.single_engine,
+			me: flight.multi_engine,
 			amphibious: flight.amphibious || 0,
 			complex: flight.complex,
 			turbine: flight.turbine,
 			rotocraft: flight.rotocraft,
-			sim: flight.sim,
+			flt_sim: flight.sim,
 			xc: flight.xc,
 			imc: flight.imc,
 			sim_imc: flight.sim_imc,
@@ -94,96 +135,143 @@ const LogTable = () => {
 		return tableFlight;
 	};
 
-	/**
-	 * This will be a list of flights generated with the
-	 * createFlight() function. The key / values for this
-	 * flight will be the data that the user sees in the table
-	 * ie: takeoffs will be night and day takoffs combined.
-	 * We use the keys of a flight to use as the field for the
-	 * column
-	 */
-	let flightArray = [];
+	const parseTotals = (flight) => {
+		// Combine day and night takeoffs
+		let totalTakeoffs = flight.day_takeoffs + flight.night_takeoffs;
+		let tableFlight = {
+			id: flight._id || '',
+			date: '',
+			aircraft_id: '',
+			route: '',
+			takeoffs: totalTakeoffs,
+			day_ldgs: flight.day_ldgs,
+			night_ldgs: flight.night_ldgs,
+			iap: flight.approaches,
+			se: flight.single_engine,
+			me: flight.multi_engine,
+			amphibious: flight.amphibious || 0,
+			complex: flight.complex,
+			turbine: flight.turbine,
+			rotocraft: flight.rotocraft,
+			flt_sim: flight.sim,
+			xc: flight.xc,
+			imc: flight.imc,
+			sim_imc: flight.sim_imc,
+			total: flight.total,
+			night: flight.night,
+			pic: flight.pic,
+			sic: flight.sic,
+			dual_recd: flight.dual_recd,
+			dual_given: flight.dual_given,
+			remarks: '',
+		};
+		return tableFlight;
+	};
 
+	// An array for table-formatted flights
+	let tableFlights = [];
+
+	// Map through the data from the db and create table flights
 	!loading &&
-		flights.data.map((f) => {
-			flightArray.push(createFlight(f));
-		});
+		flights.map((flight) => tableFlights.push(createFlight(flight)));
 
-	// The columns for our table
-	let columnArray = [];
-
-	/**
-	 * The keys from a tableFlight will be used as the 'field'
-	 * value in column creation.
-	 */
-	const getKeys = () => {
-		return Object.keys(flightArray[0]);
-	};
-
-	// Make the columns with title and field keys
-	const makeColumns = () => {
-		columns.map((title, index) => {
-			/**
-			 * For the date column, we need to turn the string date into a Date()
-			 * and sort based on that value since we cannot sort a string date.
-			 */
-			if (title === 'date') {
-				columnArray.push({
-					title: title,
-					field: getKeys()[index],
-					render: (rowData) => (
-						<div>{moment(rowData.date).format('LL')}</div>
-					),
-				});
-			} else if (title === 'remarks') {
-				columnArray.push({
-					title: title,
-					field: getKeys()[index],
-					cellStyle: {
-						maxWidth: 300,
-						overflow: 'hidden',
-						textOverflow: 'ellipsis',
-						whiteSpace: 'nowrap',
-					},
-					/**
-					 * Create a div with a tooltip. Tooltip will display full contents of remarks
-					 */
-					render: (rowData) => (
-						<Tooltip title={rowData.remarks}>
-							<span>{rowData.remarks}</span>
-						</Tooltip>
-					),
-				});
-			} else {
-				columnArray.push({ title: title, field: getKeys()[index] });
-			}
-		});
-	};
-
-	!loading && makeColumns();
+	// Handle the empty rows to fill the table out
+	const emptyRows =
+		rowsPerPage -
+		Math.min(rowsPerPage, tableFlights.length - page * rowsPerPage);
 
 	return (
 		<>
-			<MaterialTable
-				isLoading={loading}
-				options={{
-					maxBodyHeight: '85vh',
-					toolbar: false,
-					pageSize: 15,
-					pageSizeOptions: [20],
-					headerStyle: {
-						position: 'sticky',
-						top: 0,
-						textAlign: 'center',
-						textTransform: 'uppercase',
-						backgroundColor: '#000',
-						color: '#FFF',
-					},
-					padding: 'dense',
-				}}
-				columns={columnArray}
-				data={flightArray}
-			/>
+			{!loading ? (
+				<Paper className={classes.root}>
+					<TableContainer className={classes.container}>
+						<Table stickyHeader>
+							<TableHead>
+								<TableRow className={classes.topHeader}>
+									{columns.map((column) => (
+										<TableCell
+											key={column.id}
+											className={classes.topHeaderCell}
+										>
+											{column.label}
+										</TableCell>
+									))}
+								</TableRow>
+								<TableRow>
+									{columns.map((column) => (
+										<TableCell
+											key={column.label}
+											style={{
+												height: 40,
+												top: 80,
+											}}
+										>
+											{!loading &&
+												parseTotals(totals[0])[
+													column.id
+												]}
+										</TableCell>
+									))}
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{tableFlights
+									.slice(
+										page * rowsPerPage,
+										page * rowsPerPage + rowsPerPage
+									)
+									.map((row) => {
+										return (
+											<TableRow key={row.id}>
+												{columns.map((column) => {
+													const value =
+														row[column.id];
+													return (
+														<TableCell
+															key={column.id}
+															style={
+																column.style
+																	? column.style
+																	: null
+															}
+														>
+															{column.format
+																? column.format(
+																		value
+																  )
+																: value}
+														</TableCell>
+													);
+												})}
+											</TableRow>
+										);
+									})}
+								{emptyRows > 0 && (
+									<TableRow
+										style={{ height: 53 * emptyRows }}
+									>
+										<TableCell colSpan={6} />
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+					</TableContainer>
+					<TablePagination
+						rowsPerPageOptions={[10, 20, 100]}
+						component='div'
+						count={tableFlights.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						onChangePage={handleChangePage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+						ActionsComponent={LogTablePagination}
+					/>
+				</Paper>
+			) : (
+				<div className={classes.gridLoaderContainer}>
+					<GridLoader size={20} color={'grey'} />
+				</div>
+			)}
 		</>
 	);
 };

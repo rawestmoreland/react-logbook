@@ -1,13 +1,14 @@
-import React from 'react'
+import React from 'react';
 import LogTable from './LogTable';
+import LogMenu from './LogMenu';
 
 const PilotLogbook = () => {
+	return (
+		<>
+			<LogMenu />
+			<LogTable />
+		</>
+	);
+};
 
-    return (
-        <>
-        <LogTable />
-        </>
-    )
-}
-
-export default PilotLogbook
+export default PilotLogbook;

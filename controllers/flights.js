@@ -6,15 +6,87 @@ const Flight = require('../models/Flight');
 exports.getFlights = async (req, res, next) => {
 	try {
 		const flights = await Flight.find();
+		const totals = await Flight.aggregate([
+			{
+				$group: {
+					_id: null,
+					total: {
+						$sum: '$total',
+					},
+					day_takeoffs: {
+						$sum: '$day_takeoffs',
+					},
+					night_takeoffs: {
+						$sum: '$night_takeoffs',
+					},
+					day_ldgs: {
+						$sum: '$day_ldgs',
+					},
+					night_ldgs: {
+						$sum: '$night_ldgs',
+					},
+					approaches: {
+						$sum: '$approaches',
+					},
+					single_engine: {
+						$sum: '$single_engine',
+					},
+					multi_engine: {
+						$sum: '$multi_engine',
+					},
+					complex: {
+						$sum: '$complex',
+					},
+					turbine: {
+						$sum: '$turbine',
+					},
+					rotocraft: {
+						$sum: '$rotocraft',
+					},
+					xc: {
+						$sum: '$xc',
+					},
+					night: {
+						$sum: '$night',
+					},
+					imc: {
+						$sum: '$imc',
+					},
+					sim_imc: {
+						$sum: '$sim_imc',
+					},
+					sim: {
+						$sum: '$sim',
+					},
+					pic: {
+						$sum: '$pic',
+					},
+					sic: {
+						$sum: '$sic',
+					},
+					solo: {
+						$sum: '$solo',
+					},
+					dual_recd: {
+						$sum: '$dual_recd',
+					},
+					dual_given: {
+						$sum: '$dual_given',
+					},
+				},
+			},
+		]);
 		return res.status(200).json({
 			success: true,
 			count: flights.length,
+			totals: totals,
 			data: flights,
 		});
 	} catch (err) {
-		return res.statu(500).json({
+		return res.status(500).json({
 			success: false,
 			error: 'Server Error',
+			errorMessage: err.errmsg,
 		});
 	}
 };
