@@ -10,4 +10,15 @@ export const logTableStyles = makeStyles((theme) => ({
 	topHeader: {
 		height: 80,
 	},
+	topHeaderCell: {
+		backgroundColor: 'white',
+		textTransform: 'uppercase',
+		textAlign: 'center',
+	},
+	gridLoaderContainer: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: '85vh',
+	},
 }));

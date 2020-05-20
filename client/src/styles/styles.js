@@ -35,4 +35,12 @@ export const useStyles = makeStyles((theme) => ({
 		marginRight: 'auto',
 		marginLeft: 0,
 	},
+	logMenuContainer: {
+		marginBottom: 15,
+	},
+	addButton: {
+		color: 'white',
+		backgroundColor: 'green',
+		marginRight: 15,
+	},
 }));

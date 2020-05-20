@@ -12,7 +12,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { parse } from 'fast-csv';
+import Tooltip from '@material-ui/core/Tooltip';
+import GridLoader from 'react-spinners/GridLoader';
 
 const LogTable = () => {
 	// Styles for the log table
@@ -28,7 +29,7 @@ const LogTable = () => {
 	// Page we're on in the table
 	const [page, setPage] = useState(0);
 	// Number of rows per page
-	const [rowsPerPage, setRowsPerPage] = useState(25);
+	const [rowsPerPage, setRowsPerPage] = useState(20);
 
 	// Column names
 	const columns = [
@@ -76,6 +77,13 @@ const LogTable = () => {
 				textOverflow: 'ellipsis',
 				overflow: 'hidden',
 				whiteSpace: 'nowrap',
+			},
+			format: (value) => {
+				return (
+					<Tooltip title={value}>
+						<div>{value}</div>
+					</Tooltip>
+				);
 			},
 		},
 	];
@@ -174,87 +182,96 @@ const LogTable = () => {
 
 	return (
 		<>
-			<Paper className={classes.root}>
-				<TableContainer className={classes.container}>
-					<Table stickyHeader>
-						<TableHead>
-							<TableRow className={classes.topHeader}>
-								{columns.map((column) => (
-									<TableCell
-										key={column.id}
-										style={{
-											textTransform: 'uppercase',
-											textAlign: 'center',
-										}}
-									>
-										{column.label}
-									</TableCell>
-								))}
-							</TableRow>
-							<TableRow>
-								{columns.map((column) => (
-									<TableCell
-										key={column.label}
-										style={{
-											top: 80,
-										}}
-									>
-										{!loading &&
-											parseTotals(totals[0])[column.id]}
-									</TableCell>
-								))}
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{tableFlights
-								.slice(
-									page * rowsPerPage,
-									page * rowsPerPage + rowsPerPage
-								)
-								.map((row) => {
-									return (
-										<TableRow key={row.id}>
-											{columns.map((column) => {
-												const value = row[column.id];
-												return (
-													<TableCell
-														key={column.id}
-														style={
-															column.style
-																? column.style
-																: null
-														}
-													>
-														{column.format
-															? column.format(
-																	value
-															  )
-															: value}
-													</TableCell>
-												);
-											})}
-										</TableRow>
-									);
-								})}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 53 * emptyRows }}>
-									<TableCell colSpan={6} />
+			{!loading ? (
+				<Paper className={classes.root}>
+					<TableContainer className={classes.container}>
+						<Table stickyHeader>
+							<TableHead>
+								<TableRow className={classes.topHeader}>
+									{columns.map((column) => (
+										<TableCell
+											key={column.id}
+											className={classes.topHeaderCell}
+										>
+											{column.label}
+										</TableCell>
+									))}
 								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<TablePagination
-					rowsPerPageOptions={[10, 25, 100]}
-					component='div'
-					count={tableFlights.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					onChangePage={handleChangePage}
-					onChangeRowsPerPage={handleChangeRowsPerPage}
-					ActionsComponent={LogTablePagination}
-				/>
-			</Paper>
+								<TableRow>
+									{columns.map((column) => (
+										<TableCell
+											key={column.label}
+											style={{
+												height: 40,
+												top: 80,
+											}}
+										>
+											{!loading &&
+												parseTotals(totals[0])[
+													column.id
+												]}
+										</TableCell>
+									))}
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{tableFlights
+									.slice(
+										page * rowsPerPage,
+										page * rowsPerPage + rowsPerPage
+									)
+									.map((row) => {
+										return (
+											<TableRow key={row.id}>
+												{columns.map((column) => {
+													const value =
+														row[column.id];
+													return (
+														<TableCell
+															key={column.id}
+															style={
+																column.style
+																	? column.style
+																	: null
+															}
+														>
+															{column.format
+																? column.format(
+																		value
+																  )
+																: value}
+														</TableCell>
+													);
+												})}
+											</TableRow>
+										);
+									})}
+								{emptyRows > 0 && (
+									<TableRow
+										style={{ height: 53 * emptyRows }}
+									>
+										<TableCell colSpan={6} />
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+					</TableContainer>
+					<TablePagination
+						rowsPerPageOptions={[10, 20, 100]}
+						component='div'
+						count={tableFlights.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						onChangePage={handleChangePage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+						ActionsComponent={LogTablePagination}
+					/>
+				</Paper>
+			) : (
+				<div className={classes.gridLoaderContainer}>
+					<GridLoader size={20} color={'grey'} />
+				</div>
+			)}
 		</>
 	);
 };
