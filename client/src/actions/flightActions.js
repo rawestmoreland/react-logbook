@@ -10,7 +10,7 @@ import { returnErrors } from '../actions/errorActions';
 export const getFlights = (page = 1, limit = 10) => (dispatch) => {
 	dispatch(setFlightsLoading());
 	axios
-		.get(`/api/v1/flights?page=${page}&limit=${limit}`)
+		.get(`/api/v1/flights`)
 		.then((res) =>
 			dispatch({
 				type: GET_FLIGHTS,

@@ -43,4 +43,7 @@ export const useStyles = makeStyles((theme) => ({
 		backgroundColor: 'green',
 		marginRight: 15,
 	},
+	totalCell: {
+		fontWeight: 'bold',
+	},
 }));

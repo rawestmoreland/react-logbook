@@ -1,1 +1,1 @@
-GET http://localhost:5000/api/v1/flights
+GET http://localhost:5000/api/v1/aircraft

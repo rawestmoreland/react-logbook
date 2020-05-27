@@ -8,7 +8,8 @@ import {
 import { returnErrors } from './errorActions';
 
 export const getAircraft = () => (dispatch) => {
-	dispatch(setAircraftLoading());
+	// Not really necessary, since we're start off as loading = true
+	dispatch(setAircraftLoading);
 	axios
 		.get('/api/v1/aircraft')
 		.then((res) =>

@@ -200,6 +200,7 @@ const LogTable = () => {
 								<TableRow>
 									{columns.map((column) => (
 										<TableCell
+											className={classes.totalCell}
 											key={column.label}
 											style={{
 												height: 40,
