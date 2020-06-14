@@ -5,7 +5,8 @@ const Flight = require('../models/Flight');
 // @access Public
 exports.getFlights = async (req, res, next) => {
 	try {
-		const flights = await Flight.find();
+		// Get the flights and sort by the date.
+		const flights = await Flight.find().sort({ date: -1 });
 		const totals = await Flight.aggregate([
 			{
 				$group: {
