@@ -90,7 +90,7 @@ const LogTable = () => {
 
 	useEffect(() => {
 		// Let's get some flights - paginated of course
-		dispatch(getFlights(page, rowsPerPage));
+		dispatch(getFlights());
 	}, []);
 
 	const handleChangePage = (event, newPage) => {
