@@ -12,7 +12,7 @@
 		"csvtojson": "^2.0.10",
 		"fast-csv": "^4.1.4",
 		"material-table": "^1.57.2",
-		"moment": "2.24.0",
+		"moment": "2.29.2",
 		"node-sass": "^4.14.1",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
